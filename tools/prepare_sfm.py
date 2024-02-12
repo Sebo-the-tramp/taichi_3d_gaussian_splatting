@@ -92,13 +92,12 @@ def prepare_rototranslation(original):
         [0,0,0,1]
     ]
 
-def convert_sfm_to_parquet():
+def convert_sfm_to_parquet(path):
 
     # Use the function to read data
-    pd_structure, images, poses, intrinsic = extrapolate_json('sfm.json')
-
+    pd_structure, images, poses, intrinsic = extrapolate_json(path)    
     # create the .parquet file
-    point_cloud_df = pd.DataFrame(pd_structure["X"].to_list(), columns=["x", "y", "z"]).astype(float)
+    point_cloud_df = pd.DataFrame(pd_structure, columns=["x", "y", "z"]).astype(float)
     point_cloud_df.to_parquet(os.path.join("./", "point_cloud.parquet"))
 
     # iterate for each image
@@ -132,4 +131,4 @@ def convert_sfm_to_parquet():
         json.dump(val, f)
 
 if __name__ == "__main__":
-    convert_sfm_to_parquet()
+    convert_sfm_to_parquet('../../truck_test_small/MeshroomCache/ConvertSfMFormat/c4f60f9532b0ed5d81c01690e7c395fd200970e3/sfm.json')
